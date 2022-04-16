@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <!-- BEGIN: Head -->
+    <head>
+        <%- include("utils/header") %>
+        <title>Inventory Management System</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    </head>
+    <!-- END: Head -->
+    <body class="app">
+        <!-- <script>
+            function setCount(){
+                // alert($("#pageCount").val());
+                $.ajax({
+                    url: "http://localhost:3000/setCount",
+                    data: { count: $("#pageCount").val() },
+                    dataType: "json",
+                    type: "POST",
+                    success: function(data){
+                        if (typeof data.redirect == 'string'){
+                            window.location = data.redirect
+                        }
+                    }
+                });
+            }
+        </script> -->
+        <%- include("utils/mobileMenu") %>
+        <div class="flex">
+            <%- include("utils/sideMenu") %>
+            <!-- BEGIN: Content -->
+            <div class="content">
+                <!-- BEGIN: Top Bar -->
+                <div class="top-bar">
+                    <!-- BEGIN: Breadcrumb -->
+                    <div class="-intro-x breadcrumb mr-auto hidden sm:flex"> <a href="" class="">Application</a> <i data-feather="chevron-right" class="breadcrumb__icon"></i> <a href="" class="breadcrumb--active">Dashboard</a> </div>
+                    <!-- END: Breadcrumb -->
+                
+                    <!-- BEGIN: Account Menu -->
+                    <div class="intro-x dropdown w-8 h-8 relative">
+                        <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in">
+                            <img alt="Midone Tailwind HTML Admin Template" src="/dist/images/profile-12.jpg">
+                        </div>
+                        <div class="dropdown-box mt-10 absolute w-56 top-0 right-0 z-20">
+                            <div class="dropdown-box__content box bg-theme-38 text-white">
+                             
+                                <div class="p-2 border-t border-theme-40">
+                                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out hover:bg-theme-1 rounded-md"> <i data-feather="toggle-right" class="w-4 h-4 mr-2"></i> Logout </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END: Account Menu -->
+                </div>
+                <!-- END: Top Bar -->
+                <% if(typeof message.error != "undefined" && !message.error[0].success) { %>
+                    <div class="rounded-md flex items-center px-5 py-4 mb-2 bg-theme-31 text-theme-6"> <i data-feather="alert-octagon" class="w-6 h-6 mr-2"></i> 
+                        <% if(typeof message.error[0].errorMessage[0].msg != "undefined"){%>
+                            <%= message.error[0].errorMessage[0].msg %>
+                      <%}else{%>  
+                            <%= message.error[0].errorMessage%>
+                      <%}%>
+                     </div>
+                    <% }else if(typeof message.error != "undefined" && message.error[0].success){ %> 
+
+                <div class="rounded-md flex items-center px-5 py-4 mb-2 bg-theme-18 text-theme-7"> <%= message.error[0].data%>  </div>
+
+                <%}%>
+
+                
+                <div class="grid grid-cols-12 gap-6">
+                    <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
+                        <!-- BEGIN: General Report -->
+
+                      
+                        <div class="col-span-12 mt-8">
+                            <div class="intro-y flex items-center h-10">
+                                <h2 class="text-lg font-medium truncate mr-5">
+                                    View Customer
+                                </h2>
+                                <a href="/customer/add">
+                                    <button class="button text-white bg-theme-1 shadow-md mr-2">
+                                        <span class="flex"> 
+                                        <i class="w-6 h-5 mr-1" data-feather="plus"></i> Add New Customer
+                                      </span>
+                                    </button></a>
+
+                                    <div class="hidden md:block mx-auto text-gray-600"></div>
+                                    <div class="w-full md:block  sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+                                        <div class="w-56 relative text-gray-700">
+                                            <input type="text" name="search" id="search-box" class="input w-56 box pr-10 placeholder-theme-13" onkeyup="sendData(this)" placeholder="Search...">
+                                            <script>
+
+                                                function sendData(e) {
+                                                   // const searchResult = document.getElementById('searchResults')
+                                                    fetch('getCustomer',{
+                                                        method: 'POST',
+                                                        headers: {'Content-type': 'application/json'},
+                                                        body: JSON.stringify({payload: e.value})
+                                                    })
+                                                    .then(res => res.json()).then(data => {
+                                                        let payload = data.payload;
+                                                        console.log('---------')
+                                                        console.log(payload);
+                                                        // searchResults.innerHTML = ''; 
+                                                        // if(payload.length < 1){ 
+                                                        //     searchResults.innerHTML = 
+                                                        // }
+                                                    }) 
+                                                }
+                                            </script> 
+                                        </div>
+                                    </div>
+                                    <!-- <div class="hidden md:block mx-auto text-gray-600"></div>
+                                    <div class="w-full md:block  sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+                                        <div class="w-56 relative text-gray-700">
+                                            <input type="text" name="search" id="search-box" class="input w-56 box pr-10 placeholder-theme-13" onkeyup="sendData(this)" placeholder="Search...">
+                                            <script>
+
+                                                function sendData(e) {
+                                                   // const searchResult = document.getElementById('searchResults')
+                                                    fetch('getCustomer',{
+                                                        method: 'POST',
+                                                        headers: {'Content-type': 'application/json'},
+                                                        body: JSON.stringify({payload: e.value})
+                                                    }).then(res => res.json()).then(data => {
+                                                        let payload = data.payload;
+                                                        console.log(payload);
+                                                        // searchResults.innerHTML = ''; 
+                                                        // if(payload.length < 1){ 
+                                                        //     searchResults.innerHTML = 
+                                                        // }
+                                                    }) 
+                                                }
+                                            </script>                                        
+                                            </div>
+                                        </div>
+                                        </div> -->
+                                <!-- <div class="hidden md:block mx-auto text-gray-600"></div> -->
+                                <!-- <div class="w-full md:block  sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+                                    <div class="w-56 relative text-gray-700">
+                                        <input type="text" name="search" id="search-box" class="input w-56 box pr-10 placeholder-theme-13" onkeyup="sendData(this)" placeholder="Search...">
+                                        <section id="searchResult">
+
+                                        </section>
+                                        <script>
+                                            function sendData(e) {
+                                                fetch('getCustomer',{
+                                                    method: 'POST',
+                                                    headers: {'Content-type': 'application/json'},
+                                                    body: JSON.stringify({payload: e.value})
+                                                });
+                                            }
+                                        </script> -->
+                                    </div>
+                                <div class="grid grid-cols-12 gap-6 mt-5">
+  
+                            <!-- BEGIN: Data List -->
+                    <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
+                        <% if(data.length>0) { %>
+                        <table class="table table-report -mt-2" id="searchResults">
+                            <thead>
+                                <tr>
+                                    <th class="whitespace-no-wrap">Sr.no</th>
+                                    <th class="whitespace-no-wrap">Customer NAME</th>
+                                    <th class="whitespace-no-wrap">Customer Email</th>
+                                    <th class="whitespace-no-wrap">Customer Contact</th>
+                                    <th class="whitespace-no-wrap">Customer Address</th>
+                                    <th class="text-center whitespace-no-wrap">ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <% for(var i=0; i<data.length;i++) { %>
+                            <tbody>
+
+                                <tr class="intro-x">
+                                    
+                                        <td class="text-center"> <%= i %> </td>
+                                        <td class="text-center"> <%= data[i].cust_name %></td>
+                                        <td class="text-center"><%= data[i].cust_email %></td>
+                                        <td class="text-center"><%= data[i].cust_mob %></td>
+                                        <td class="text-center"> <%= data[i].cust_address %></td>
+                                    
+                                    <td class="table-report__action w-56">
+                                        <div class="flex justify-center items-center">
+                                            <button type="submit" formmethod="get"><a class="flex items-center text-theme-1 mr-3" href="edit/<%= data[i].id %>"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i> Edit </a></button>
+                                            <a class="flex items-center text-theme-6" onclick="confirm('Are you sure you want to delete')" href="delete/<%= data[i].id %>" data-toggle="modal" data-target="#delete-confirmation-modal"> <i data-feather="trash-2" class="w-4 h-4 mr-1"></i> Delete </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                               
+                            </tbody>
+                            <% } %>
+                        </table>
+                        <% } else { %>
+                            No Record Found
+                          <% } %>
+      
+                    </div>
+                    <!-- END: Data List -->
+                         <!-- BEGIN: Pagination -->
+                        
+                         
+                         <!-- END: Pagination -->    
+                            </div>
+                            </div>
+                        </div>
+                        <!-- END: General Report -->
+                    </div>
+                </div>
+            </div>
+            <!-- END: Content -->
+        </div>
+        <%- include("utils/footer") %>
+    </body>
+</html>
